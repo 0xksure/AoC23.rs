@@ -3,10 +3,15 @@ use std::{collections::HashMap, fmt::format, io::Error, io::ErrorKind, vec};
 pub fn get_sum_of_digits() -> Result<u64, Error> {
     let input_document = std::fs::read_to_string("src/day1/code.csv").unwrap();
     let mut sum = 0;
+    let mut line_num = 1;
     for line in input_document.lines() {
         let first_and_last_digit = get_first_and_last_digit_letters(line)?;
-        println!("First and last digit: {} of {}", first_and_last_digit, line);
+        println!(
+            "{} First and last digit: {} of {}",
+            line_num, first_and_last_digit, line
+        );
         sum += first_and_last_digit;
+        line_num += 1;
     }
     return Ok(sum);
 }
@@ -51,7 +56,7 @@ fn get_first_and_last_digit_letters(code: &str) -> Result<u64, Error> {
                 matching_in_list(subset, valid_number_strings.keys().collect::<Vec<&&str>>());
             if is_match.1 {
                 number_matches.push(subset);
-                i = j;
+                i += 1;
                 break;
             }
             if !is_match.0 {
@@ -129,5 +134,6 @@ mod tests {
     #[test]
     fn test_get_first_and_last_digit_letters() {
         assert_eq!(get_first_and_last_digit_letters("one").unwrap(), 11);
+        assert_eq!(get_first_and_last_digit_letters("twotwothree").unwrap(), 23);
     }
 }
